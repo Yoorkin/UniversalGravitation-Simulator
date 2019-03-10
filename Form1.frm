@@ -7,8 +7,8 @@ Begin VB.Form Form1
    ClientTop       =   450
    ClientWidth     =   12705
    LinkTopic       =   "Form1"
-   ScaleHeight     =   7815
-   ScaleWidth      =   12705
+   ScaleHeight     =   10950
+   ScaleWidth      =   20160
    StartUpPosition =   3  '´°¿ÚÈ±Ê¡
    Begin VB.Timer Timer1 
       Interval        =   1
@@ -18,17 +18,17 @@ Begin VB.Form Form1
    Begin VB.Shape ShapeA 
       BackStyle       =   1  'Opaque
       Height          =   375
-      Left            =   5640
+      Left            =   19320
       Shape           =   2  'Oval
-      Top             =   1440
+      Top             =   3480
       Width           =   375
    End
    Begin VB.Shape ShapeB 
       BackStyle       =   1  'Opaque
       Height          =   615
-      Left            =   5400
+      Left            =   19200
       Shape           =   2  'Oval
-      Top             =   5400
+      Top             =   4440
       Width           =   615
    End
 End
@@ -57,22 +57,22 @@ End Type
 
 Private Sub Form_Load()
  With PlanetA
-  .Mass = 2000000#
-  '.Velocity.x = -10
+  .Mass = 200000#
+  .Velocity.x = -30
   ShapeA.Width = .Mass / 1000
   ShapeA.Height = .Mass / 1000
  End With
  
  With PlanetB
   .Mass = 100000#
-  .Velocity.x = 20
+  .Velocity.x = 30
   ShapeB.Width = .Mass / 1000
   ShapeB.Height = .Mass / 1000
  End With
 End Sub
 
 Private Sub Timer1_Timer()
-    On Error Resume Next
+    On Error GoTo 1
     Dim Distance As Double, a As Double, PlaACenter As Vector, PlaBCenter As Vector
     
     PlaACenter.x = ShapeA.Left + ShapeA.Width / 2
@@ -81,13 +81,13 @@ Private Sub Timer1_Timer()
     PlaBCenter.x = ShapeB.Left + ShapeB.Width / 2
     PlaBCenter.y = ShapeB.Top + ShapeB.Height / 2
     
-    Distance = (Sqr((PlaACenter.x - PlaBCenter.x) ^ 2 + (PlaACenter.y - PlaBCenter.y) ^ 2)) / 500
+    Distance = (Sqr((PlaACenter.x - PlaBCenter.x) ^ 2 + (PlaACenter.y - PlaBCenter.y) ^ 2)) / 100000
     
     With PlanetA
      a = (G * PlanetB.Mass) / Distance ^ 2
      
-     .Acceleration.x = (PlaBCenter.x - PlaACenter.x) * a
-     .Acceleration.y = (PlaBCenter.y - PlaACenter.y) * a
+     .Acceleration.x = (PlaBCenter.x - PlaACenter.x) / Abs(PlaBCenter.x - PlaACenter.x) * a
+     .Acceleration.y = (PlaBCenter.y - PlaACenter.y) / Abs(PlaBCenter.y - PlaACenter.y) * a
      
      .Velocity.x = PlanetA.Velocity.x + PlanetA.Acceleration.x
      .Velocity.y = PlanetA.Velocity.y + PlanetA.Acceleration.y
@@ -98,13 +98,14 @@ Private Sub Timer1_Timer()
 
      a = (G * PlanetA.Mass) / Distance ^ 2
      
-     .Acceleration.x = (PlaACenter.x - PlaBCenter.x) * a
-     .Acceleration.y = (PlaACenter.y - PlaBCenter.y) * a
+     .Acceleration.x = (PlaACenter.x - PlaBCenter.x) / Abs(PlaACenter.x - PlaBCenter.x) * a
+     .Acceleration.y = (PlaACenter.y - PlaBCenter.y) / Abs(PlaACenter.y - PlaBCenter.y) * a
      
      .Velocity.x = PlanetB.Velocity.x + PlanetB.Acceleration.x
      .Velocity.y = PlanetB.Velocity.y + PlanetB.Acceleration.y
      
     End With
+1:
     With ShapeA: ShapeA.Move .Left + PlanetA.Velocity.x, .Top + PlanetA.Velocity.y: End With
     With ShapeB: ShapeB.Move .Left + PlanetB.Velocity.x, .Top + PlanetB.Velocity.y: End With
     
