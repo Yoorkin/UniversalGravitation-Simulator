@@ -7,9 +7,10 @@ Begin VB.Form Form1
    ClientTop       =   450
    ClientWidth     =   12705
    LinkTopic       =   "Form1"
-   ScaleHeight     =   10950
-   ScaleWidth      =   20160
+   ScaleHeight     =   7815
+   ScaleWidth      =   12705
    StartUpPosition =   3  '´°¿ÚÈ±Ê¡
+   WindowState     =   2  'Maximized
    Begin VB.Timer Timer1 
       Interval        =   1
       Left            =   12240
